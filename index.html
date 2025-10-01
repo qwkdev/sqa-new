@@ -1,0 +1,84 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>SQA.MY</title>
+
+	<style>
+		body {
+			margin: 0;
+			background: #000;
+
+			overflow: hidden;
+		}
+		#header, #stats {
+			width: 100%;
+			height: 50vh;
+
+			position: relative;
+
+			h1 {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+
+				font-size: 3vw;
+				text-align: center;
+				margin: 0;
+				color: #fff;
+				font-family: Arial, sans-serif;
+			}
+		}
+		#line {
+			--size: .5vw;
+
+			width: 120vw;
+			height: 20vw;
+
+			background: linear-gradient(to right, #000 10%, #fff 50%, #000 90%);
+			box-shadow: 0 -2vw 1vw 1vw #f00;
+
+			position: absolute;
+			top: 50vh;
+			left: 50%;
+			transform: translateX(-50%);
+
+			border-radius: 50% / 100%;
+			border-bottom-left-radius: 0;
+			border-bottom-right-radius: 0;
+
+			z-index: -2;
+
+			#line-cover {
+				width: calc(100% - var(--size));
+				height: 100%;
+
+				background: #000;
+
+				position: absolute;
+				top: var(--size);
+				left: 0;
+
+				border-radius: 50% / 100%;
+				border-bottom-left-radius: 0;
+				border-bottom-right-radius: 0;
+			}
+		}
+	</style>
+</head>
+<body>
+	<div id="header">
+		<h1>Hello World</h1>
+	</div>
+	<!-- TODO: SVG + box-shadow -->
+	<div id="line">
+		<div id="line-cover"></div>
+	</div>
+	<div id="stats">
+		<h1>Example</h1>
+	</div>
+</body>
+</html>

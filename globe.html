@@ -1,0 +1,298 @@
+<!-- WARNING: AI SLOP -->
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+		<title>Minimal 3D Globe - Highlight Country</title>
+		<style>
+			body {
+				margin: 0;
+				background: #0f1724;
+			}
+			.hero {
+				width: 100vw;
+
+				position: absolute;
+				top: 0vw;
+				right: -50vw;
+
+				/* transform: translateY(-50%); */
+			}
+			svg {
+				display: block;
+				width: 100%;
+				height: auto;
+			}
+			/* Minimal styling */
+			.ocean {
+				fill: url(#oceanGradient);
+				stroke: none;
+			}
+			.land {
+				fill: #e6eef7;
+				fill-opacity: 0.95;
+				stroke: rgba(0, 0, 0, 0.06);
+				stroke-width: 0.4;
+			}
+			.country-highlight {
+				fill: #ff6b6b;
+				fill-opacity: 1;
+				stroke: #7a1f1f;
+				stroke-opacity: 0.15;
+				stroke-width: 0.6;
+				filter: url(#glow);
+			}
+			.rim {
+				fill: none;
+				stroke: rgba(255, 255, 255, 0.06);
+				stroke-width: 1.2;
+			}
+			/* subtle drop shadow */
+			.globe-shadow {
+				filter: url(#dropShadow);
+			}
+		</style>
+	</head>
+	<body>
+		<div style="position: absolute; top: 0; left: 0">
+			<input type="range" id="lat" min="-90" max="90" value="0" />
+			<input type="range" id="lon" min="-180" max="180" value="0" />
+		</div>
+
+		<div class="hero">
+			<svg
+				id="globe"
+				viewBox="0 0 600 600"
+				role="img"
+				aria-label="Globe with highlighted country"
+			>
+				<defs>
+					<radialGradient id="oceanGradient" cx="35%" cy="30%" r="70%">
+						<stop offset="0%" stop-color="#8fb6ff" stop-opacity="0.95" />
+						<stop offset="100%" stop-color="#2b4d86" stop-opacity="0.95" />
+					</radialGradient>
+
+					<!-- subtle glow for highlight -->
+					<filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+						<feGaussianBlur stdDeviation="6" result="b" />
+						<feMerge>
+							<feMergeNode in="b" />
+							<feMergeNode in="SourceGraphic" />
+						</feMerge>
+					</filter>
+
+					<!-- soft drop shadow for the whole globe -->
+					<filter id="dropShadow" x="-50%" y="-50%" width="200%" height="200%">
+						<feGaussianBlur in="SourceAlpha" stdDeviation="8" result="blur" />
+						<feOffset in="blur" dx="0" dy="8" result="off" />
+						<feComposite
+							in="off"
+							in2="SourceAlpha"
+							operator="out"
+							result="shadow"
+						/>
+						<feColorMatrix
+							in="shadow"
+							type="matrix"
+							values="0 0 0 0 0
+										0 0 0 0 0
+										0 0 0 0 0
+										0 0 0 0.35"
+						/>
+						<feMerge>
+							<feMergeNode />
+							<feMergeNode in="SourceGraphic" />
+						</feMerge>
+					</filter>
+				</defs>
+				<!-- content will be injected by script -->
+			</svg>
+		</div>
+
+		<!-- d3 + topojson from CDN -->
+		<script src="https://unpkg.com/d3@7/dist/d3.min.js"></script>
+		<script src="https://unpkg.com/topojson-client@3/dist/topojson-client.min.js"></script>
+
+		<script>
+			(async function () {
+				// ====== CONFIGURE THIS ======
+				// Acceptable inputs: country name (e.g. "France") or ISO_A3 (e.g. "FRA")
+				const HIGHLIGHT = "United Kingdom"; // <-- change this to the country you want highlighted
+				const WIDTH = 600;
+				const HEIGHT = 600;
+				const R = Math.min(WIDTH, HEIGHT) / 2 - 8; // globe radius
+				// ============================
+
+				const svg = d3.select("#globe");
+				svg.selectAll("*:not(defs)").remove(); // clear
+
+				// create a group centered in the SVG
+				const g = svg
+					.append("g")
+					.attr("transform", `translate(${WIDTH / 2},${HEIGHT / 2})`)
+					.attr("class", "globe-shadow");
+
+				// orthographic projection (gives a sphere look)
+				const projection = d3
+					.geoOrthographic()
+					.scale(R)
+					.translate([0, 0])
+					.precision(0.5)
+					.clipAngle(90);
+
+				const path = d3.geoPath(projection);
+
+				// fetch world topojson (small 110m)
+				const topoUrl = "https://unpkg.com/world-atlas@2/countries-110m.json";
+				let world;
+				try {
+					const resp = await fetch(topoUrl);
+					if (!resp.ok) throw new Error("failed to fetch world data");
+					world = await resp.json();
+				} catch (err) {
+					console.error("Could not load world topojson:", err);
+					svg
+						.append("text")
+						.attr("x", WIDTH / 2)
+						.attr("y", HEIGHT / 2)
+						.attr("fill", "white")
+						.attr("text-anchor", "middle")
+						.text("World data failed to load.");
+					return;
+				}
+
+				const countries = topojson.feature(
+					world,
+					world.objects.countries
+				).features;
+
+				// draw ocean disc (so the globe looks like a sphere)
+				g.append("circle").attr("r", R).attr("class", "ocean");
+
+				// draw rim (subtle highlight rim)
+				g.append("circle").attr("r", R).attr("class", "rim");
+
+				// draw all land minimal
+				g.append("g")
+					.selectAll("path.land")
+					.data(countries)
+					.join("path")
+					.attr("class", "land")
+					.attr("d", path);
+
+				// find highlight candidate by name or by ISO_A3 in properties
+				const highlightFeature = countries.find((f) => {
+					const props = f.properties || {};
+					const name = (props.name || props.NAME || "")
+						.toString()
+						.toLowerCase();
+					const isoA3 = (props.iso_a3 || props.ISO_A3 || props.ADM0_A3 || "")
+						.toString()
+						.toUpperCase();
+					return (
+						name === HIGHLIGHT.toString().toLowerCase() ||
+						isoA3 === HIGHLIGHT.toString().toUpperCase()
+					);
+				});
+
+				if (!highlightFeature) {
+					// fallback: try fuzzy match by substring on name
+					const fuzzy = countries.find((f) =>
+						(f.properties.name || "")
+							.toLowerCase()
+							.includes(HIGHLIGHT.toString().toLowerCase())
+					);
+					if (fuzzy) {
+						console.warn(
+							"Using fuzzy country match for:",
+							fuzzy.properties.name
+						);
+					}
+					if (!fuzzy) {
+						console.warn("Country not found:", HIGHLIGHT);
+					}
+					// use fuzzy if available
+				}
+
+				const featureToHighlight =
+					highlightFeature ||
+					countries.find(
+						(f) =>
+							(f.properties || {}).name &&
+							f.properties.name
+								.toLowerCase()
+								.includes(HIGHLIGHT.toString().toLowerCase())
+					);
+
+				if (featureToHighlight) {
+					g.append("path")
+						.datum(featureToHighlight)
+						.attr("class", "country-highlight")
+						.attr("d", path);
+				} else {
+					console.warn(
+						"No matching feature to highlight. Check country name or try ISO_A3."
+					);
+				}
+
+				// optional: draw thin graticule (keeps it minimal)
+				const graticule = d3.geoGraticule10();
+				g.append("path")
+					.datum(graticule)
+					.attr("d", path)
+					.attr("fill", "none")
+					.attr("stroke", "rgba(255,255,255,0.03)")
+					.attr("stroke-width", 0.4);
+
+				// center the globe so the highlighted country's centroid faces the viewer
+				if (featureToHighlight) {
+					const centroid = d3.geoCentroid(featureToHighlight);
+					// set rotation so centroid is at [0,0] (center of projection)
+					projection.rotate([-centroid[0], -centroid[1]]);
+					// re-render land & highlight with the new rotation
+					g.selectAll("path.land").attr("d", path);
+					g.selectAll("path.country-highlight").attr("d", path);
+					g.selectAll("path")
+						.filter((d) => !d)
+						.attr("d", path); // defensive
+				}
+
+				const setRotation = (lon, lat) => {
+					projection.rotate([-lon, -lat]);
+					g.selectAll("path.land").attr("d", path);
+					g.selectAll("path.country-highlight").attr("d", path);
+					g.selectAll("path")
+						.filter((d) => !d)
+						.attr("d", path);
+				};
+				const latSlider = document.getElementById("lat");
+				const lonSlider = document.getElementById("lon");
+
+				latSlider.addEventListener("input", (e) =>
+					setRotation(parseFloat(lonSlider.value), parseFloat(latSlider.value))
+				);
+				lonSlider.addEventListener("input", (e) =>
+					setRotation(parseFloat(lonSlider.value), parseFloat(latSlider.value))
+				);
+
+				// OPTIONAL: function to export standalone SVG string (for hero image)
+				window.exportSVG = function () {
+					const serializer = new XMLSerializer();
+					const node = document.querySelector("#globe");
+					// clone defs into final svg so gradients/filters are available
+					const svgClone = node.cloneNode(true);
+					// ensure viewBox present
+					svgClone.setAttribute("viewBox", `0 0 ${WIDTH} ${HEIGHT}`);
+					return serializer.serializeToString(svgClone);
+				};
+
+				// For accessibility, set title/desc
+				svg.append("title").text(`Globe highlighting ${HIGHLIGHT}`);
+				svg
+					.append("desc")
+					.text(`Minimal orthographic globe. ${HIGHLIGHT} is highlighted.`);
+			})();
+		</script>
+	</body>
+</html>
