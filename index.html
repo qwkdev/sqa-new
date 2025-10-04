@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,15 +6,17 @@
 	<title>SQA.MY</title>
 
 	<style>
+		:root {
+			--bg: #141415;
+		}
+
 		body {
 			margin: 0;
-			background: #000;
-
-			overflow: hidden;
+			background: var(--bg);
 		}
 		#header, #stats {
 			width: 100%;
-			height: 50vh;
+			height: 20vh;
 
 			position: relative;
 
@@ -33,52 +34,384 @@
 			}
 		}
 		#line {
-			--size: .5vw;
-
-			width: 120vw;
-			height: 20vw;
-
-			background: linear-gradient(to right, #000 10%, #fff 50%, #000 90%);
-			box-shadow: 0 -2vw 1vw 1vw #f00;
+			width: 150vw;
 
 			position: absolute;
-			top: 50vh;
+			top: 20vh;
 			left: 50%;
 			transform: translateX(-50%);
 
-			border-radius: 50% / 100%;
-			border-bottom-left-radius: 0;
-			border-bottom-right-radius: 0;
-
 			z-index: -2;
 
-			#line-cover {
-				width: calc(100% - var(--size));
-				height: 100%;
+			svg {
+				width: 100%;
+				height: auto;
 
-				background: #000;
+				/* stroke: #777; */
+				stroke-width: .2vw;
+				filter: drop-shadow(0 0 2vw #777)
+						drop-shadow(0 0 2vw #777) 
+						drop-shadow(0 0 2vw #777);
+			}
+		}
+
+		#visit-counter {
+			width: 100vw;
+			height: 18vw;
+
+			position: relative;			
+			
+			.digits {
+				--padding: 1vw;
+				background: #333335;
 
 				position: absolute;
-				top: var(--size);
-				left: 0;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
 
-				border-radius: 50% / 100%;
-				border-bottom-left-radius: 0;
-				border-bottom-right-radius: 0;
+				border-radius: 1vw;
+				padding: var(--padding);
+				display: flex;
+				gap: .5vw;
+
+				.digit {
+					--digit: 0;
+
+					display: flex;
+					flex-direction: column;
+
+					height: 8vw;
+					gap: var(--padding);
+
+					overflow: hidden;
+
+					p {
+						transform: translateY(calc((-100% - var(--padding)) * var(--digit)));
+						transition: 1s;
+
+						border-radius: .5vw;
+						width: 5vw;
+						height: 8vw;
+						line-height: 8vw;
+
+						background: #222224;
+
+						color: #fff;
+						text-align: center;
+						font-family: monospace;
+						font-size: 6vw;
+						margin: 0;
+
+						user-select: none;
+					}
+				}
+			}
+		}
+
+		#reviews-wrapper {
+			--gap: 2vh;
+			--height: 20vh;
+			width: 100vw;
+			position: relative;
+			overflow-x: hidden;
+			display: flex;
+			flex-direction: column;
+			user-select: none;
+			gap: var(--gap);
+
+			&::before, &::after {
+				content: '';
+				position: absolute;
+				top: 0;
+				width: 3vw;
+				height: 100%;
+				z-index: 10;
+			}
+			&::before {
+				left: 0;
+				background: linear-gradient(to right, #141415ff, #14141500);
+			}
+			&::after {
+				right: 0;
+				background: linear-gradient(to left, #141415ff, #14141500);
+			}
+			.review-row {
+				overflow-x: hidden;
+				display: flex;
+				user-select: none;
+				gap: var(--gap);
+
+				height: var(--height);
+
+				&:nth-of-type(even) .reviews {
+					animation: marquee-scroll var(--time) linear reverse infinite;
+					animation-delay: var(--delay);
+				}
+			}
+			.reviews {
+				flex-shrink: 0;
+				min-width: 100%;
+				display: flex;
+				gap: var(--gap);
+				width: fit-content;
+
+				animation: marquee-scroll var(--time) linear infinite;
+				animation-delay: var(--delay);
+
+				.review {
+					--width: 40vh;
+					width: var(--width);
+					height: var(--height);
+					box-sizing: border-box;
+					background: rgba(245, 245, 255, 0.075);
+					border: .2vh solid rgba(255, 255, 255, 0.15);
+					border-radius: 2vh;
+					position: relative;
+
+					p {
+						font-family: Arial;
+						color: #fff;
+						font-size: calc(var(--height) * 0.1);
+						width: calc(var(--width) * 0.8);
+						height: calc(var(--height) * 0.5);
+						margin: 0;
+						position: absolute;
+						top: calc(var(--height) * 0.1);
+						left: calc(var(--height) * 0.11);
+					}
+					h2 {
+						font-weight: 500;
+						font-family: Arial;
+						color: #fff;
+						text-align: right;
+						font-size: calc(var(--height) * 0.08);
+						width: calc(var(--width) * 0.5);
+						height: calc(var(--height) * 0.1);
+						margin: 0;
+						position: absolute;
+						bottom: calc(var(--height) * 0.1);
+						right: calc(var(--height) * 0.11);
+					}
+					span.rating {
+						font-family: monospace;
+						color: #fff;
+						color: #ffcc00;
+						font-size: calc(var(--height) * 0.125);
+						width: calc(var(--width) * 0.3);
+						height: calc(var(--height) * 0.15);
+						margin: 0;
+						position: absolute;
+						bottom: calc(var(--height) * 0.095);
+						left: calc(var(--height) * 0.09);
+					}
+				}
+			}
+		}
+		@keyframes marquee-scroll {
+			0% {
+				transform: translateX(0);
+			}
+			100% {
+				transform: translateX(calc(-100% - var(--gap)));
 			}
 		}
 	</style>
 </head>
 <body>
 	<div id="header">
-		<h1>Hello World</h1>
-	</div>
-	<!-- TODO: SVG + box-shadow -->
-	<div id="line">
-		<div id="line-cover"></div>
-	</div>
-	<div id="stats">
 		<h1>Example</h1>
 	</div>
+	<div id="line">
+		<div>
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 200">
+				<defs>
+					<linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+						<stop offset="17.5%" stop-color="#7770" />
+						<stop offset="50%" stop-color="#fff" />
+						<stop offset="82.5%" stop-color="#7770" />
+					</linearGradient>
+				</defs>
+				<ellipse
+					cx="500"
+					cy="250"
+					rx="500"
+					ry="200"
+					stroke="url(#lineGradient)"
+					fill="none"
+				/>
+			</svg>
+		</div>
+	</div>
+
+	<div id="visit-counter">
+		<div class="digits">
+			<div class="digit" style="--digit: 0;">
+				<p>0</p><p>1</p><p>2</p><p>3</p><p>4</p><p>5</p><p>6</p><p>7</p><p>8</p><p>9</p>
+			</div>
+			<div class="digit" style="--digit: 0;">
+				<p>0</p><p>1</p><p>2</p><p>3</p><p>4</p><p>5</p><p>6</p><p>7</p><p>8</p><p>9</p>
+			</div>
+			<div class="digit" style="--digit: 0;">
+				<p>0</p><p>1</p><p>2</p><p>3</p><p>4</p><p>5</p><p>6</p><p>7</p><p>8</p><p>9</p>
+			</div>
+			<div class="digit" style="--digit: 0;">
+				<p>0</p><p>1</p><p>2</p><p>3</p><p>4</p><p>5</p><p>6</p><p>7</p><p>8</p><p>9</p>
+			</div>
+			<div class="digit" style="--digit: 0;">
+				<p>0</p><p>1</p><p>2</p><p>3</p><p>4</p><p>5</p><p>6</p><p>7</p><p>8</p><p>9</p>
+			</div>
+			<div class="digit" style="--digit: 0;">
+				<p>0</p><p>1</p><p>2</p><p>3</p><p>4</p><p>5</p><p>6</p><p>7</p><p>8</p><p>9</p>
+			</div>
+		</div>
+	</div>
+
+	<div id="reviews-wrapper" style="--time: 20s;">
+		<div class="review-row" style="--delay: 0s;">
+			<div class="reviews">
+				<div class="review">
+					<p>Example Text 1</p>
+					<h2>&mdash;&nbsp; Name</h2>
+					<span class="rating">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+				</div>
+				<div class="review">
+					<p>Example Text 2</p>
+					<h2>&mdash;&nbsp; Name</h2>
+					<span class="rating">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+				</div>
+				<div class="review">
+					<p>Example Text 3</p>
+					<h2>&mdash;&nbsp; Name</h2>
+					<span class="rating">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+				</div>
+				<div class="review">
+					<p>Example Text 4</p>
+					<h2>&mdash;&nbsp; Name</h2>
+					<span class="rating">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+				</div>
+				<div class="review">
+					<p>Example Text 5</p>
+					<h2>&mdash;&nbsp; Name</h2>
+					<span class="rating">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+				</div>
+			</div>
+			<div class="reviews">
+				<div class="review">
+					<p>Example Text 1</p>
+					<h2>&mdash;&nbsp; Name</h2>
+					<span class="rating">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+				</div>
+				<div class="review">
+					<p>Example Text 2</p>
+					<h2>&mdash;&nbsp; Name</h2>
+					<span class="rating">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+				</div>
+				<div class="review">
+					<p>Example Text 3</p>
+					<h2>&mdash;&nbsp; Name</h2>
+					<span class="rating">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+				</div>
+				<div class="review">
+					<p>Example Text 4</p>
+					<h2>&mdash;&nbsp; Name</h2>
+					<span class="rating">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+				</div>
+				<div class="review">
+					<p>Example Text 5</p>
+					<h2>&mdash;&nbsp; Name</h2>
+					<span class="rating">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+				</div>
+			</div>
+		</div>
+		<div class="review-row" style="--delay: 0s;">
+			<div class="reviews">
+				<div class="review">
+					<p>Example Text 1</p>
+					<h2>&mdash;&nbsp; Name</h2>
+					<span class="rating">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+				</div>
+				<div class="review">
+					<p>Example Text 2</p>
+					<h2>&mdash;&nbsp; Name</h2>
+					<span class="rating">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+				</div>
+				<div class="review">
+					<p>Example Text 3</p>
+					<h2>&mdash;&nbsp; Name</h2>
+					<span class="rating">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+				</div>
+				<div class="review">
+					<p>Example Text 4</p>
+					<h2>&mdash;&nbsp; Name</h2>
+					<span class="rating">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+				</div>
+				<div class="review">
+					<p>Example Text 5</p>
+					<h2>&mdash;&nbsp; Name</h2>
+					<span class="rating">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+				</div>
+			</div>
+			<div class="reviews">
+				<div class="review">
+					<p>Example Text 1</p>
+					<h2>&mdash;&nbsp; Name</h2>
+					<span class="rating">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+				</div>
+				<div class="review">
+					<p>Example Text 2</p>
+					<h2>&mdash;&nbsp; Name</h2>
+					<span class="rating">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+				</div>
+				<div class="review">
+					<p>Example Text 3</p>
+					<h2>&mdash;&nbsp; Name</h2>
+					<span class="rating">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+				</div>
+				<div class="review">
+					<p>Example Text 4</p>
+					<h2>&mdash;&nbsp; Name</h2>
+					<span class="rating">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+				</div>
+				<div class="review">
+					<p>Example Text 5</p>
+					<h2>&mdash;&nbsp; Name</h2>
+					<span class="rating">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<script>
+		const reviewsWrapper = document.getElementById('reviews-wrapper');
+		Array.from(reviewsWrapper.querySelectorAll('.review-row')).forEach(e => {
+			e.style.setProperty('--delay', String(-1 * Math.random() * parseFloat(reviewsWrapper.style.getPropertyValue('--time'))) + 's');
+		});
+
+		function setCounter(counter, value) {
+			const digits = Array.from(counter.querySelectorAll('.digit'));
+			const newValue = (String(value).padStart(digits, '0')).slice(-digits.length);
+
+			digits.forEach((e, i) => {
+				e.style.setProperty('--digit', parseInt(newValue[i]));
+			});
+		}
+
+		const visitDigits = document.getElementById('visit-counter').querySelector('.digits');
+		function updateVisitCounter() {
+			fetch('https://qwk.pythonanywhere.com/totalv/sqa', { method: 'GET' })
+				.then(response => response.json())
+				.then(data => {
+					setCounter(visitDigits, data['visits']);
+				})
+				.catch(error => {
+					setCounter(visitDigits, 0);
+					console.error('Error fetching total visits:', error)
+				});
+		}
+
+		setInterval(() => updateVisitCounter(), 10000);
+		updateVisitCounter();
+	</script>
 </body>
 </html>
