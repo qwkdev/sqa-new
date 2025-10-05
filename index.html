@@ -13,6 +13,8 @@
 		body {
 			margin: 0;
 			background: var(--bg);
+
+			overflow-x: hidden;
 		}
 		#header, #stats {
 			width: 100%;
@@ -57,7 +59,7 @@
 
 		#visit-counter {
 			width: 100vw;
-			height: 18vw;
+			padding: 4vw 0 3vw 0;
 
 			position: relative;			
 			
@@ -65,10 +67,8 @@
 				--padding: 1vw;
 				background: #333335;
 
-				position: absolute;
-				top: 50%;
-				left: 50%;
-				transform: translate(-50%, -50%);
+				width: min-content;
+				margin: 0 auto;
 
 				border-radius: 1vw;
 				padding: var(--padding);
@@ -106,6 +106,19 @@
 						user-select: none;
 					}
 				}
+			}
+			h2 {
+				width: 100%;
+				height: max-content;
+
+				margin: 0;
+				margin-top: 1vw;
+
+				font-size: 1.5vw;
+				line-height: 1.5vw;
+				text-align: center;
+				font-family: Arial;
+				color: #777;
 			}
 		}
 
@@ -216,6 +229,45 @@
 				transform: translateX(calc(-100% - var(--gap)));
 			}
 		}
+
+		#metrics {
+			margin-top: 10vw;
+
+			width: 100vw;
+			height: 20vw;
+
+			display: flex;
+			align-items: center;
+			justify-content: center;
+
+			.metric {
+				width: 20vw;
+
+				h1, p {
+					width: 100%;
+					height: max-content;
+
+					text-align: center;
+					font-family: Arial;
+
+					margin: 0;
+				}
+				h1 {
+					color: #fff;
+					font-size: 5vw;
+					line-height: 5vw;
+				}
+				p {
+					margin-top: 1.5vw;
+					color: #ccc;
+					font-size: 1.5vw;
+					line-height: 1.5vw;
+				}
+			}
+			.middle-metric {
+				margin-bottom: 2vw;
+			}
+		}
 	</style>
 </head>
 <body>
@@ -244,26 +296,18 @@
 		</div>
 	</div>
 
-	<div id="visit-counter">
-		<div class="digits">
-			<div class="digit" style="--digit: 0;">
-				<p>0</p><p>1</p><p>2</p><p>3</p><p>4</p><p>5</p><p>6</p><p>7</p><p>8</p><p>9</p>
-			</div>
-			<div class="digit" style="--digit: 0;">
-				<p>0</p><p>1</p><p>2</p><p>3</p><p>4</p><p>5</p><p>6</p><p>7</p><p>8</p><p>9</p>
-			</div>
-			<div class="digit" style="--digit: 0;">
-				<p>0</p><p>1</p><p>2</p><p>3</p><p>4</p><p>5</p><p>6</p><p>7</p><p>8</p><p>9</p>
-			</div>
-			<div class="digit" style="--digit: 0;">
-				<p>0</p><p>1</p><p>2</p><p>3</p><p>4</p><p>5</p><p>6</p><p>7</p><p>8</p><p>9</p>
-			</div>
-			<div class="digit" style="--digit: 0;">
-				<p>0</p><p>1</p><p>2</p><p>3</p><p>4</p><p>5</p><p>6</p><p>7</p><p>8</p><p>9</p>
-			</div>
-			<div class="digit" style="--digit: 0;">
-				<p>0</p><p>1</p><p>2</p><p>3</p><p>4</p><p>5</p><p>6</p><p>7</p><p>8</p><p>9</p>
-			</div>
+	<div id="metrics">
+		<div class="metric">
+			<h1>123</h1>
+			<p>Total Subjects</p>
+		</div>
+		<div class="metric middle-metric">
+			<h1>2819</h1>
+			<p>Papers and Marking Schemes</p>
+		</div>
+		<div class="metric">
+			<h1>6741</h1>
+			<p>Sorted Questions</p>
 		</div>
 	</div>
 
@@ -381,6 +425,30 @@
 			</div>
 		</div>
 	</div>
+
+	<div id="visit-counter">
+		<div class="digits">
+			<div class="digit" style="--digit: 0;">
+				<p>0</p><p>1</p><p>2</p><p>3</p><p>4</p><p>5</p><p>6</p><p>7</p><p>8</p><p>9</p>
+			</div>
+			<div class="digit" style="--digit: 0;">
+				<p>0</p><p>1</p><p>2</p><p>3</p><p>4</p><p>5</p><p>6</p><p>7</p><p>8</p><p>9</p>
+			</div>
+			<div class="digit" style="--digit: 0;">
+				<p>0</p><p>1</p><p>2</p><p>3</p><p>4</p><p>5</p><p>6</p><p>7</p><p>8</p><p>9</p>
+			</div>
+			<div class="digit" style="--digit: 0;">
+				<p>0</p><p>1</p><p>2</p><p>3</p><p>4</p><p>5</p><p>6</p><p>7</p><p>8</p><p>9</p>
+			</div>
+			<div class="digit" style="--digit: 0;">
+				<p>0</p><p>1</p><p>2</p><p>3</p><p>4</p><p>5</p><p>6</p><p>7</p><p>8</p><p>9</p>
+			</div>
+			<div class="digit" style="--digit: 0;">
+				<p>0</p><p>1</p><p>2</p><p>3</p><p>4</p><p>5</p><p>6</p><p>7</p><p>8</p><p>9</p>
+			</div>
+		</div>
+		<h2>Total Visits</h2>
+	</div>
 	
 	<script>
 		const reviewsWrapper = document.getElementById('reviews-wrapper');
@@ -410,8 +478,9 @@
 				});
 		}
 
-		setInterval(() => updateVisitCounter(), 10000);
-		updateVisitCounter();
+		// setInterval(() => updateVisitCounter(), 10000);
+		// updateVisitCounter();
+		setTimeout(() => setCounter(visitDigits, 123456), 500);
 	</script>
 </body>
 </html>
