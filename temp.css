@@ -1,0 +1,207 @@
+#top {
+	--corner: 2vw;
+
+	width: 100vw;
+	height: 13vw;
+	display: grid;
+	grid-template-columns: 25vw 61vw 14vw;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 100;
+	background: linear-gradient(to bottom, #141415ff 0%, #141415aa 90%, #14141500 100%);
+	
+	#logo, #icon {
+		background: rgba(245, 245, 255, 0.075);
+		border: .5vw solid rgba(255, 255, 255, 0.15);
+		border-radius: var(--corner);
+		backdrop-filter: blur(5px);
+	}
+	#logo, #search, #icon {
+		transition: .2s;
+		user-select: none;
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+	}
+	#logo:hover, #search a:hover, #icon:hover {
+		background: rgba(245, 245, 255, 0.1);
+	}
+	#logo {
+		margin: 1.5vw .75vw 0 1.5vw;
+		position: relative;
+		height: 10.5vw;
+		
+		h1 {
+			color: #fff;
+			font-family: Arial;
+			font-weight: 600;
+			font-size: 4vw;
+			line-height: 4vw;
+			width: max-content;
+			height: max-content;
+			text-align: center;
+			position: absolute;
+			margin: 0;
+			top: 48%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+
+			&::selection {
+				background: #ffffff55;
+			}
+		}
+		&:hover {
+			transform: scale(1.05);
+		}
+	}
+	#search {
+		margin: 1.5vw .75vw 0 .75vw;
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		transition: all .2s, opacity .5s;
+
+		a {
+			--border: .3vw;
+			width: 100%;
+			height: 100%;
+			background: rgba(245, 245, 255, 0.075);
+			border: .5vw solid rgba(255, 255, 255, 0.15);
+			backdrop-filter: blur(5px);
+			box-sizing: border-box;
+			color: #fff;
+			text-decoration: none;
+			font-family: Arial;
+			font-weight: 500;
+			font-size: 4vw;
+			line-height: 10.5vw;
+			text-align: center;
+			transition: all .2s, opacity .5s;
+
+			&:nth-child(1) {
+				border-right-width: var(--border);
+				border-top-left-radius: var(--corner);
+				border-bottom-left-radius: var(--corner);
+			}
+			&:nth-child(2) {
+				border-left-width: var(--border);
+				border-right-width: var(--border);
+			}
+			&:nth-child(3) {
+				border-left-width: var(--border);
+				border-top-right-radius: var(--corner);
+				border-bottom-right-radius: var(--corner);
+			}
+		}
+		&:hover {
+			transform: scale(1.025);
+		}
+	}
+	#icon {
+		margin: 1.5vw 1.5vw 0 .75vw;
+		position: relative;
+		z-index: 102;
+
+		svg {
+			position: absolute;
+			top: 50%;
+			left: 51%;
+			transform: translate(-50%, -50%);
+			width: 60%;
+			height: 60%;
+			stroke: #fff;
+			fill: #fff;
+		}
+		&:hover {
+			transform: scale(1.05);
+		}
+	}
+}
+#finder {
+	--corner: 2vw;
+	--width: 60.6vw;
+	--height: 10.5vw;
+	width: var(--width);
+	height: var(--height);
+	position: absolute;
+	top: 1.5vw;
+	right: 13.25vw;
+	background: rgba(245, 245, 255, 0.075);
+	border: .5vw solid rgba(255, 255, 255, 0.15);
+	border-right: none;
+	border-radius: var(--corner) 0 0 var(--corner);
+	backdrop-filter: blur(5px);
+	z-index: 101;
+	transition: all .5s, border-radius 0s;
+	
+	input {
+		width: calc(var(--width) * 0.9);
+		height: calc(var(--height) * 0.8);
+		margin-top: calc(var(--height) * 0.08);
+		margin-left: calc(var(--width) * 0.07);
+		padding: 0;
+		border: 0;
+		background: transparent;
+		color: #fff;
+		font-size: calc(var(--height) * 0.3);
+		transition: .2s;
+		
+		&:focus {
+			outline: none;
+		}
+	}
+}
+#results {
+	--corner: 2vw;
+	--width: 60.65vw;
+	--height: 10.3vw;
+	display: grid;
+	grid-template-columns: auto;
+	width: var(--width);
+	height: max-content;
+	max-height: calc(var(--height) * 2.5);
+	overflow-x: hidden;
+	overflow-y: scroll;
+	position: absolute;
+	top: calc(2.4vw + var(--height));
+	right: 12.8vw;
+	background: rgba(245, 245, 255, 0.075);
+	border: .5vw solid rgba(255, 255, 255, 0.15);
+	border-top: none;
+	border-radius: 0 0 var(--corner) var(--corner);
+	backdrop-filter: blur(20px);
+
+	a {
+		width: calc(var(--width) - 1.5vw);
+		height: calc(var(--height) * 0.5);
+		line-height: calc(var(--height) * 0.5);
+		font-size: calc(var(--height) * 0.25);
+		margin: 0;
+		padding-left: 1.5vw;
+		text-decoration: none;
+		color: #fff;
+		font-family: Arial;
+		font-weight: 500;
+		position: relative;
+		transition: .2s;
+		
+		&:hover {
+			background: rgba(245, 245, 255, 0.025);
+		}
+		b {
+			color: #fff;
+			background: #ffffff55;
+			font-weight: 500;
+		}
+		span {
+			color: #ffffff55;
+			font-family: Arial;
+			position: absolute;
+			right: 1vw;
+			top: 0;
+			height: 100%;
+			text-align: right;
+			font-size: calc(var(--height) * 0.2);
+		}
+	}
+}
