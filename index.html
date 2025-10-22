@@ -9,7 +9,8 @@
 		:root {
 			--bg: #141415;
 
-			--u: 1vw;
+			--u: 1.2vw;
+			--tu: 1vw;
 
 			--glass-bg: rgba(245, 245, 255, 0.075);
 			--glass-bg-hover: rgba(245, 245, 255, 0.1);
@@ -79,14 +80,20 @@
 			width: 100%;
 			height: min-content;
 			display: flex;
-			justify-content: center;
+			flex-direction: column;
+			align-items: center;
+
+			position: relative;
+
+			margin: 0;
+			margin-top: calc(7 * var(--u));
+			padding-bottom: calc(10 * var(--u));
 
 			#query {
 				background: var(--glass-bg);
 
 				border: calc(.3 * var(--u)) solid var(--glass-border);
 				border-radius: calc(2 * var(--u));
-				/* backdrop-filter: blur(var(--glass-blur)); */
 
 				box-sizing: border-box;
 				width: calc(70 * var(--u));
@@ -94,8 +101,6 @@
 				padding-left: calc(2 * var(--u));
 
 				margin: 0;
-				margin-top: calc(7 * var(--u));
-				margin-bottom: calc(10 * var(--u));
 
 				font-family: Arial;
 				font-weight: 500;
@@ -111,6 +116,34 @@
 				&::selection {
 					background: #ffffff55;
 				}
+			}
+			#results2 {
+				background: var(--glass-bg);
+				border: calc(.3 * var(--u)) solid var(--glass-border);
+				border-top: none;
+				border-radius: calc(2 * var(--u));
+				backdrop-filter: blur(var(--glass-blur));
+
+				box-sizing: border-box;
+				width: calc(70 * var(--u));
+				height: calc(8 * var(--u));
+		
+				height: 10vw;
+			}
+			#results2[hidden] {
+				opacity: 0;
+				visibility: hidden;
+			}
+			#results2:not([hidden]) {
+				border-top-left-radius: 0;
+				border-top-right-radius: 0;
+			}
+			#query:has(+ #results2:not([hidden])) {
+				border-bottom-left-radius: 0;
+				border-bottom-right-radius: 0;
+			}
+			#query, #results2, #results2 a {
+				transition: .5s;
 			}
 		}
 
@@ -477,14 +510,14 @@
 		}
 
 		#top {
-			--gap: calc(1 * var(--u));
+			--gap: calc(1 * var(--tu));
 
-			--w1: calc((25 * var(--u)) - (var(--gap) / 2) - var(--top-padding));
-			--w3: calc((15 * var(--u)) - (var(--gap) / 2) - var(--top-padding));
-			--w2: calc(100vw - (40 * var(--u)) - var(--gap));
+			--w1: calc((25 * var(--tu)) - (var(--gap) / 2) - var(--top-padding));
+			--w3: calc((15 * var(--tu)) - (var(--gap) / 2) - var(--top-padding));
+			--w2: calc(100vw - (40 * var(--tu)) - var(--gap));
 
-			--br: calc(2 * var(--u));
-			--border: calc(.3 * var(--u));
+			--br: calc(2 * var(--tu));
+			--border: calc(.3 * var(--tu));
 
 			width: 100vw;
 			height: var(--top-height);
@@ -539,7 +572,7 @@
 
 					font-family: Arial;
 					font-weight: 700;
-					font-size: calc(4 * var(--u));
+					font-size: calc(4 * var(--tu));
 					
 					text-align: center;
 					position: absolute;
@@ -565,7 +598,7 @@
 
 					font-family: Arial;
 					font-weight: 500;
-					font-size: calc(5 * var(--u));
+					font-size: calc(5 * var(--tu));
 
 					text-align: center;
 					text-decoration: none;
@@ -625,7 +658,7 @@
 					background: transparent;
 					font-family: Arial;
 					font-weight: 500;
-					font-size: calc(3 * var(--u));
+					font-size: calc(3 * var(--tu));
 					color: #fff;
 
 					&:focus {
@@ -648,7 +681,7 @@
 
 				box-sizing: border-box;
 				border: var(--border) solid var(--glass-border);
-				border-top: 0;
+				border-top: none;
 				border-radius: var(--br);
 				border-top-left-radius: 0;
 				border-top-right-radius: 0;
@@ -775,17 +808,20 @@
 			z-index: 100;
 
 			display: grid;
-			grid-template-columns: auto var(--qc-width);
+			gap: 0;
+			grid-template-columns: calc(.09 * var(--qc-width)) auto;
 
 			transition: .5s;
 
 			#qchat-close {
 				position: relative;
 				width: 100%;
+				height: auto;
 				aspect-ratio: 1/1;
 
 				background: #000;
 
+				outline: none;
 				border: none;
 				box-sizing: border-box;
 				border-radius: 30%;
@@ -819,6 +855,7 @@
 		@media only screen and (min-aspect-ratio: 1/1) {
 			:root {
 				--u: 1vh;
+				--tu: 1vh;
 			}
 			#line {
 				top: calc(var(--top-margin) - (5 * (1vw - 1vh)));
@@ -843,7 +880,7 @@
 	</style>
 </head>
 <body>
-	<header id="top" role="banner" data-search="1" aria-label="Site Logo and Navigation">
+	<header id="top" role="banner" data-search="0" aria-label="Site Logo and Navigation">
 		<div id="logo">
 			<h1>{{ lower }}</h1>
 		</div>
@@ -876,7 +913,12 @@
 		</div>
 		<section id="finder2">
 			<input type="text" id="query" placeholder="Search for a subject..." aria-label="Past Paper Subject Search">
-			<div id="results2"></div>
+			<div id="results2">
+				<a href="https://nat5.sqa.my/computing">N5 <b>Computing</b><span>27%</span></a>
+				<a href="https://higher.sqa.my/computing">H <b>Computing</b><span>27%</span></a>
+				<a href="https://ah.sqa.my/computing">AH <b>Computing</b><span>27%</span></a>
+				<a href="https://higher.sqa.my/accounting">H A<b>ccounting</b><span>18%</span></a>
+			</div>
 		</section>
 		<div id="line">
 			<div>
