@@ -16,7 +16,7 @@
 			--glass-bg-hover: rgba(245, 245, 255, 0.1);
 			--glass-bg-hover2: rgba(245, 245, 255, 0.08);
 			--glass-border: rgba(255, 255, 255, 0.15);
-			--glass-blur: calc(1 * var(--u));
+			--glass-blur: calc(1.5 * var(--u));
 
 			--top-height: calc(9 * var(--u));
 			--top-padding: calc(1.5 * var(--u));
@@ -118,17 +118,52 @@
 				}
 			}
 			#results2 {
+				position: absolute;
+				top: calc(8 * var(--u));
 				background: var(--glass-bg);
 				border: calc(.3 * var(--u)) solid var(--glass-border);
 				border-top: none;
 				border-radius: calc(2 * var(--u));
-				backdrop-filter: blur(var(--glass-blur));
+				backdrop-filter: blur(calc(var(--glass-blur) * 10));
 
 				box-sizing: border-box;
 				width: calc(70 * var(--u));
-				height: calc(8 * var(--u));
-		
-				height: 10vw;
+				height: max-content;
+				display: grid;
+
+				a {
+					--height: calc(6 * var(--u));
+
+					padding: 0 calc(var(--height) * .2);
+					height: var(--height);
+					width: 100%;
+					box-sizing: border-box;
+
+					color: #fff;
+					font-family: Arial;
+					font-weight: 500;
+					font-size: calc(var(--height) * .5);
+					line-height: var(--height);
+					text-decoration: none;
+
+					&:hover {
+						background: var(--glass-bg-hover2);
+					}
+
+					b {
+						font-weight: 500;
+						background: #fff3;
+					}
+					span {
+						color: #777;
+						float: right;
+					}
+				}
+				a:last-child {
+					border-radius: calc(var(--br) * 0.75);
+					border-top-left-radius: 0;
+					border-top-right-radius: 0;
+				}
 			}
 			#results2[hidden] {
 				opacity: 0;
@@ -669,7 +704,7 @@
 					}
 				}
 			}
-			#results {
+			#top-results {
 				height: max-content;
 				opacity: 0;
 				visibility: hidden;
@@ -728,7 +763,7 @@
 			#logo, #search, #icon, #finder {
 				transition: .5s;
 			}
-			#results, #results a {
+			#top-results, #top-results a {
 				transition: .2s;
 			}
 		}
@@ -748,15 +783,15 @@
 				visibility: visible;
 				width: calc(var(--w2) + var(--gap));
 			}
-			#results {
+			#top-results {
 				opacity: 1;
 				visibility: visible;
 			}
-			#results[hidden] {
+			#top-results[hidden] {
 				opacity: 0;
 				visibility: hidden;
 			}
-			#finder:has(+ #results:not([hidden])) {
+			#finder:has(+ #top-results:not([hidden])) {
 				border-bottom-left-radius: 0;
 			}
 		}
@@ -899,12 +934,7 @@
 		<div id="finder">
 			<input type="text" id="top-query" placeholder="Search for a subject..." aria-label="Past Paper Subject Search">
 		</div>
-		<div id="results">
-			<a href="https://nat5.sqa.my/computing">N5 <b>Computing</b><span>27%</span></a>
-			<a href="https://higher.sqa.my/computing">H <b>Computing</b><span>27%</span></a>
-			<a href="https://ah.sqa.my/computing">AH <b>Computing</b><span>27%</span></a>
-			<a href="https://higher.sqa.my/accounting">H A<b>ccounting</b><span>18%</span></a>
-		</div>
+		<div id="top-results" hidden></div>
 	</header>
 
 	<main id="main" role="main" aria-label="Main Content">
@@ -1123,15 +1153,22 @@
 
 		const topNav = document.getElementById('top');
 		const topQuery = document.getElementById('top-query');
+		const topResults = document.getElementById('top-results');
 		function toggleSearch() {
 			setTimeout(() => {
 				topNav.dataset.search = topNav.dataset.search == 0 ? 1 : 0;
 			}, 50);
 		}
+		const heroQuery = document.getElementById('query');
+		const heroResults = document.getElementById('results2');
 		document.addEventListener('click', event => {
 			if (topNav.dataset.search == 1 && event.target !== topQuery) {
 				toggleSearch();
 			}
+			// if (event.target !== heroQuery) {
+			// 	heroResults.hidden = true;
+			// }
+			heroResults.hidden = event.target !== heroQuery;
 		});
 
 		const qChatWrapper = document.getElementById('qchat-wrapper');
