@@ -31,6 +31,9 @@
 
 			overflow-x: hidden;
 		}
+		body::-webkit-scrollbar {
+			display: none;
+		}
 		#main {
 			min-height: 100vh;
 			margin-top: calc(var(--top-height) + var(--top-padding));
@@ -131,9 +134,11 @@
 				height: max-content;
 				display: grid;
 
-				a {
-					--height: calc(6 * var(--u));
+				--height: calc(6 * var(--u));
+				max-height: calc(var(--height) * 4);
+				overflow-y: scroll;
 
+				a {
 					padding: 0 calc(var(--height) * .2);
 					height: var(--height);
 					width: 100%;
@@ -239,11 +244,6 @@
 				gap: var(--gap);
 
 				height: var(--height);
-
-				&:nth-of-type(even) .reviews {
-					animation: marquee-scroll var(--time) linear reverse infinite;
-					animation-delay: var(--delay);
-				}
 			}
 			.reviews {
 				flex-shrink: 0;
@@ -302,6 +302,10 @@
 						left: calc(var(--height) * 0.09);
 					}
 				}
+			}
+			.review-row:nth-of-type(even) .reviews {
+				animation: marquee-scroll var(--time) linear reverse infinite;
+				animation-delay: var(--delay);
 			}
 		}
 		@keyframes marquee-scroll {
@@ -726,9 +730,11 @@
 
 				display: grid;
 
-				a {
-					--height: calc(var(--top-height) * .7);
+				--height: calc(var(--top-height) * .7);
+				max-height: calc(var(--height) * 4);
+				overflow-y: scroll;
 
+				a {
 					padding: 0 calc(var(--height) * .2);
 					height: var(--height);
 					width: 100%;
@@ -943,12 +949,7 @@
 		</div>
 		<section id="finder2">
 			<input type="text" id="query" placeholder="Search for a subject..." aria-label="Past Paper Subject Search">
-			<div id="results2">
-				<a href="https://nat5.sqa.my/computing">N5 <b>Computing</b><span>27%</span></a>
-				<a href="https://higher.sqa.my/computing">H <b>Computing</b><span>27%</span></a>
-				<a href="https://ah.sqa.my/computing">AH <b>Computing</b><span>27%</span></a>
-				<a href="https://higher.sqa.my/accounting">H A<b>ccounting</b><span>18%</span></a>
-			</div>
+			<div id="results2" hidden></div>
 		</section>
 		<div id="line">
 			<div>
@@ -1147,8 +1148,11 @@
 	
 	<script>
 		const reviewsWrapper = document.getElementById('reviews-wrapper');
-		Array.from(reviewsWrapper.querySelectorAll('.review-row')).forEach(e => {
-			e.style.setProperty('--delay', String(-1 * Math.random() * parseFloat(reviewsWrapper.style.getPropertyValue('--time'))) + 's');
+		const oddDelay = String(-1 * Math.random() * parseFloat(reviewsWrapper.style.getPropertyValue('--time'))) + 's';
+		const evenDelay = String(-1 * Math.random() * parseFloat(reviewsWrapper.style.getPropertyValue('--time'))) + 's';
+
+		Array.from(reviewsWrapper.querySelectorAll('.review-row')).forEach((e, i) => {
+			e.style.setProperty('--delay', i % 2 == 0 ? evenDelay : oddDelay);
 		});
 
 		const topNav = document.getElementById('top');
@@ -1165,11 +1169,11 @@
 			if (topNav.dataset.search == 1 && event.target !== topQuery) {
 				toggleSearch();
 			}
-			// if (event.target !== heroQuery) {
-			// 	heroResults.hidden = true;
-			// }
-			heroResults.hidden = event.target !== heroQuery;
+			if (event.target !== heroQuery) heroResults.hidden = true;
 		});
+		heroQuery.addEventListener('click', e => {
+			heroResults.hidden = heroResults.children.length == 0;
+		})
 
 		const qChatWrapper = document.getElementById('qchat-wrapper');
 		const qChatEmbed = document.getElementById('qchat');
@@ -1178,6 +1182,8 @@
 			qChatEmbed.contentWindow.postMessage({ type: 'control-sync', sync: show ? true : false }, 'https://chat.qwk.zone');
 		}
 		qChatEmbed.addEventListener('load', e => qChat(false));
+
+		const subjects = [ { "short": "apps", "mid": "Apps", "long": "Applications of Maths", "level": "n5" }, { "short": "art", "mid": "Art", "long": "Art", "level": "n5" }, { "short": "bio", "mid": "Biology", "long": "Biology", "level": "n5" }, { "short": "business", "mid": "Business", "long": "Business", "level": "n5" }, { "short": "canto", "mid": "Canto", "long": "Cantonese", "level": "n5" }, { "short": "chem", "mid": "Chemistry", "long": "Chemistry", "level": "n5" }, { "short": "computing", "mid": "Computing", "long": "Computing Science", "level": "n5" }, { "short": "dance", "mid": "Dance", "long": "Dance", "level": "n5" }, { "short": "dm", "mid": "D&M", "long": "Design and Manufacture", "level": "n5" }, { "short": "drama", "mid": "Drama", "long": "Drama", "level": "n5" }, { "short": "engineering", "mid": "Engineering", "long": "Engineering Science", "level": "n5" }, { "short": "english", "mid": "English", "long": "English", "level": "n5" }, { "short": "esol", "mid": "ESOL", "long": "ESOL", "level": "n5" }, { "short": "french", "mid": "French", "long": "French", "level": "n5" }, { "short": "geo", "mid": "Geography", "long": "Geography", "level": "n5" }, { "short": "graphics", "mid": "Graphics", "long": "Graphic Communication", "level": "n5" }, { "short": "history", "mid": "History", "long": "History", "level": "n5" }, { "short": "maths", "mid": "Maths", "long": "Mathematics", "level": "n5" }, { "short": "mody", "mid": "Mody", "long": "Modern Studies", "level": "n5" }, { "short": "music", "mid": "Music", "long": "Music", "level": "n5" }, { "short": "musictech", "mid": "Music Tech", "long": "Music Technology", "level": "n5" }, { "short": "philosophy", "mid": "Philosophy", "long": "Philosophy", "level": "n5" }, { "short": "physics", "mid": "Physics", "long": "Physics", "level": "n5" }, { "short": "rmps", "mid": "RMPS", "long": "RMPS", "level": "n5" }, { "short": "spanish", "mid": "Spanish", "long": "Spanish", "level": "n5" }, { "short": "accounting", "mid": "Accounting", "long": "Accounting", "level": "h" }, { "short": "admin", "mid": "Admin", "long": "Administration and IT", "level": "h" }, { "short": "apps", "mid": "Apps", "long": "Applications of Maths", "level": "h" }, { "short": "art", "mid": "Art", "long": "Art", "level": "h" }, { "short": "bio", "mid": "Biology", "long": "Biology", "level": "h" }, { "short": "business", "mid": "Business", "long": "Business", "level": "h" }, { "short": "canto", "mid": "Canto", "long": "Cantonese", "level": "h" }, { "short": "chem", "mid": "Chemistry", "long": "Chemistry", "level": "h" }, { "short": "computing", "mid": "Computing", "long": "Computing Science", "level": "h" }, { "short": "dance", "mid": "Dance", "long": "Dance", "level": "h" }, { "short": "dm", "mid": "D&M", "long": "Design and Manufacture", "level": "h" }, { "short": "drama", "mid": "Drama", "long": "Drama", "level": "h" }, { "short": "engineering", "mid": "Engineering", "long": "Engineering Science", "level": "h" }, { "short": "english", "mid": "English", "long": "English", "level": "h" }, { "short": "esol", "mid": "ESOL", "long": "ESOL", "level": "h" }, { "short": "french", "mid": "French", "long": "French", "level": "h" }, { "short": "geo", "mid": "Geography", "long": "Geography", "level": "h" }, { "short": "graphics", "mid": "Graphics", "long": "Graphic Communication", "level": "h" }, { "short": "history", "mid": "History", "long": "History", "level": "h" }, { "short": "humanbio", "mid": "Human Bio", "long": "Human Biology", "level": "h" }, { "short": "maths", "mid": "Maths", "long": "Mathematics", "level": "h" }, { "short": "mody", "mid": "Mody", "long": "Modern Studies", "level": "h" }, { "short": "music", "mid": "Music", "long": "Music", "level": "h" }, { "short": "musictech", "mid": "Music Tech", "long": "Music Technology", "level": "h" }, { "short": "pe", "mid": "PE", "long": "PE", "level": "h" }, { "short": "philosophy", "mid": "Philosophy", "long": "Philosophy", "level": "h" }, { "short": "photography", "mid": "Photography", "long": "Photography", "level": "h" }, { "short": "physics", "mid": "Physics", "long": "Physics", "level": "h" }, { "short": "politics", "mid": "Politics", "long": "Politics", "level": "h" }, { "short": "rmps", "mid": "RMPS", "long": "RMPS", "level": "h" }, { "short": "spanish", "mid": "Spanish", "long": "Spanish", "level": "h" }, { "short": "bio", "mid": "Biology", "long": "Biology", "level": "ah" }, { "short": "business", "mid": "Business", "long": "Business", "level": "ah" }, { "short": "chem", "mid": "Chemistry", "long": "Chemistry", "level": "ah" }, { "short": "computing", "mid": "Computing", "long": "Computing Science", "level": "ah" }, { "short": "english", "mid": "English", "long": "English", "level": "ah" }, { "short": "french", "mid": "French", "long": "French", "level": "ah" }, { "short": "geo", "mid": "Geography", "long": "Geography", "level": "ah" }, { "short": "graphics", "mid": "Graphics", "long": "Graphic Communication", "level": "ah" }, { "short": "history", "mid": "History", "long": "History", "level": "ah" }, { "short": "maths", "mid": "Maths", "long": "Mathematics", "level": "ah" }, { "short": "mody", "mid": "Mody", "long": "Modern Studies", "level": "ah" }, { "short": "music", "mid": "Music", "long": "Music", "level": "ah" }, { "short": "physics", "mid": "Physics", "long": "Physics", "level": "ah" }, { "short": "rmps", "mid": "RMPS", "long": "RMPS", "level": "ah" }, { "short": "spanish", "mid": "Spanish", "long": "Spanish", "level": "ah" } ];
 
 		function setCounter(counter, value) {
 			const digits = Array.from(counter.querySelectorAll('.digit'));
@@ -1204,6 +1210,70 @@
 		setInterval(() => updateVisitCounter(), 5000);
 		updateVisitCounter();
 		// setTimeout(() => setCounter(visitDigits, 123456), 500);
+	</script>
+	<script src="https://cdn.jsdelivr.net/gh/qwkdev/sqa/fuse.js"></script>
+	<script>
+		const fuse = new Fuse(subjects, {
+			keys: [
+				{ name: "short", weight: 0.3 },
+				{ name:   "mid", weight: 0.5 },
+				{ name:  "long", weight: 0.2 }
+			],
+			includeScore: true,
+			includeMatches: true,
+			threshold: 0.4
+		});
+		function normal(score) {
+			return 1 - Math.min(Math.max(score, 0), 1);
+		}
+		function normalizeInput(str) {
+			return str
+				.toLowerCase()
+				.replace(/\bnational ?5\b/g, 'n5')
+				.replace(/\bnat ?5\b/g, 'n5')
+				.replace(/\badvanced ?higher\b/g, 'ah')
+				.replace(/\badv ?higher\b/g, 'ah')
+				.replace(/\bhigher\b/g, 'h');
+			}
+
+		const levelsd = {"n5": "nat5", "h": "higher", "ah": "ah"};
+		function fuseUpdate(resultList, event) {
+			const x = normalizeInput(event.target.value || '');
+			console.log(x);
+			const results = fuse.search(x);
+			
+			resultList.innerHTML = '';
+			if (results.length > 0) {
+				resultList.hidden = false;
+
+				let total = results.reduce((sum, item) => sum + normal(item.score), 0);
+				results.forEach(ele => {
+					let subject = document.createElement('a');
+					subject.href = `https://${levelsd[ele.item.level]}.sqa.my/${ele.item.short}`;
+					
+					let resultName = ele.item.mid;
+					let offset = 0;
+
+					ele.matches?.find(obj => obj.key === "mid")?.indices[0].forEach((i, index) => {
+						if (index % 2 === 0) {
+							resultName = resultName.slice(0, i+offset) + `<b>${resultName.slice(i+offset)}`;
+							offset += 3;
+						} else {
+							resultName = resultName.slice(0, i+offset+1) + `</b>${resultName.slice(i+offset+1)}`;
+							offset += 4;
+						}
+					})
+
+					subject.innerHTML = `${ele.item.level.toUpperCase()} ${resultName}<span>${Math.round((normal(ele.score) / total) * 100)}%</span>`;
+					resultList.appendChild(subject);
+				})
+			} else {
+				resultList.hidden = true;
+			}
+		}
+
+		topQuery.addEventListener('input', e => fuseUpdate(topResults, e));
+		heroQuery.addEventListener('input', e => fuseUpdate(heroResults, e));
 	</script>
 </body>
 </html>
