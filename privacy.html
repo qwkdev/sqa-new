@@ -12,7 +12,7 @@
 	<meta name="color-scheme" content="dark light">
 	<meta name="author" content="qwk">
 
-	<title>404 | {{ upper }}</title>
+	<title>Privacy Policy | {{ upper }}</title>
 	<style>
 		:root {
 			--bg: #141415;
@@ -41,7 +41,7 @@
 		body::-webkit-scrollbar {
 			display: none;
 		}
-
+		
 
 		#main {
 			width: 100vw;
@@ -64,18 +64,30 @@
 		#main h1::selection {
 			background: #ffffff55;
 		}
-		#main p {
+		#main h2, #main p, #main li {
 			font-family: Arial;
 			font-weight: 500;
 			font-size: calc(1.8 * var(--u));
-			line-height: calc(2 * var(--u));
-			color: #777;
+			line-height: calc(2.2 * var(--u));
+			color: #fff;
+			margin: calc(1 * var(--u)) 0;
+		}
+		#main h2 {
+			font-size: calc(2.8 * var(--u));
+			line-height: calc(3 * var(--u));
+			font-weight: 700;
+			margin-top: calc(2.8 * var(--u));
+		}
+		#main ul {
+			margin: 0 calc(2 * var(--u));
+		}
+		#main li {
 			margin: 0;
 		}
-		#main p::selection, #main p span::selection {
-			background: #77777755;
+		#main h2::selection, #main p::selection, #main li::selection {
+			background: #ffffff55;
 		}
-
+		
 
 		.underlined {
 			color: #fff;
@@ -472,6 +484,7 @@
 	</style>
 </head>
 <body>
+	<div id="start"></div>
 	<header id="top" role="banner" data-search="0" aria-label="Site Logo and Navigation">
 		<div id="logo">
 			<h1>{{ lower }}</h1>
@@ -495,18 +508,138 @@
 	</header>
 	
 	<main id="main" role="main" aria-label="Main Content">
-		<h1 id="name">Error 404</h1>
-		<p id="description">
-			We couldn't find the page you were looking for.<br>
-			Please check the URL and try again,<br>
-			or search for it using the search bar above.<br>
-			<br>
-			If you came accross this page normally, please let us know using the "Contact" button below.<br>
-			<br>
-			<span id="visits">Loading visits...</span>
+		<h1>Privacy Policy</h1>
+		<p id="0">
+			Last updated: {{ date }}<br><br>
+			This Privacy & Cookie Policy explains how we collect, use, and protect your personal information when you use our website, {{ upper }}.<br>
+			We are committed to protecting your privacy and complying with the UK General Data Protection Regulation (UK GDPR) and relevant data protection laws.<br>
+		</p>
+
+		<h2>0. Notes About Third Parties</h1>
+		<p id="1">
+			While QTrack (see <span><a class="underlined" href="#9" aria-label="Section 9">Section 9<span class="underline" style="--widen: 3%; --fix: 1.7%;"></span></a></span>) is always on,<br>
+			Google Analytics and Google AdSense will often be turned off on our end.
+		</p>
+
+		<h2 id="2">1. Information We Collect</h2>
+		<p>When you use our website, we may collect the following types of information:</p>
+		<ul>
+			<li><b>Usage data</b>: pages visited, time on page, clicks, scroll depth, etc.</li>
+			<li><b>Device data</b>: browser type, screen size, operating system, and device type</li>
+			<li><b>IP address</b>: anonymized for analytics purposes</li>
+			<li><b>Cookies</b>: small text files stored on your device (see <span><a class="underlined" href="#4" aria-label="Section 4">Section 4<span class="underline" style="--widen: 3%; --fix: 1.7%;"></span></a></span>)</li>
+		</ul>
+		<p>We <b>do not</b> collect personal identifiers like your name, email, or phone number unless you explicitly provide them.</p>
+		
+		<h2 id="3">2. How We Use Your Data</h2>
+		<p>We use your data for the following purposes:</p>
+		<ul>
+			<li>To understand how visitors use our site (analytics)</li>
+			<li>To improve our website's content and performance</li>
+			<li>To display relevant advertising through Google AdSense</li>
+			<li>To comply with legal obligations</li>
+		</ul>
+
+		<h2 id="4">3. Legal Basis for Processing</h2>
+		<p>Under UK GDPR, we rely on the following legal bases:</p>
+		<ul>
+			<li><b>Consent</b> &mdash; for cookies used for analytics and advertising</li>
+			<li><b>Legitimate interests</b> &mdash; to ensure the website functions correctly</li>
+		</ul>
+		<p>You can withdraw your consent at any time (see <span><a class="underlined" href="#6" aria-label="Section 6">Section 6<span class="underline" style="--widen: 3%; --fix: 1.7%;"></span></a></span>).</p>
+
+		<h2 id="5">4. Cookies and Tracking Technologies</h2>
+		<p>We use cookies for:</p>
+		<ul>
+			<li><b>Essential functionality</b> (e.g., saving preferences)</li>
+			<li><b>Analytics</b> (via Google Analytics)</li>
+			<li><b>Advertising</b> (via Google AdSense)</li>
+		</ul>
+		<p>You can manage your cookie preferences using the options on our site.</p>
+
+		<h2>Cookies We Use:</h2>
+		<ul>
+			<li><b>Analytics</b>: "_ga", "_gid" &mdash; Tracks user interaction (lasts: 1 day - 2 years)</li>
+			<li><b>Advertising</b>: "IDE", "ANID" &mdash; Personalized ad delivery (lasts: 1 - 13 months)</li>
+			<li><b>Essential</b>: "cookie_consent" &mdash; Stores consent preferences (lasts: 1 year)</li>
+		</ul>
+
+		<h2 id="6">5. Third-Party Services</h2>
+		<p>We use the following third-party providers:</p>
+		
+		<h2>Google Analytics 4</h2>
+		<ul>
+			<li>Used to collect aggregated data about how users interact with our website.</li>
+			<li>Read more: <span><a class="underlined" href="https://support.google.com/analytics/answer/6004245" target="_blank">https://support.google.com/analytics/answer/6004245<span class="underline" style="--widen: 1%; --fix: .6%;"></span></a></span></li>
+			<li>Opt-out: <span><a class="underlined" href="https://tools.google.com/dlpage/gaoptout" target="_blank">https://tools.google.com/dlpage/gaoptout<span class="underline" style="--widen: 1%; --fix: .6%;"></span></a></span></li>
+		</ul>
+		<h2>Google AdSense</h2>
+		<ul>
+			<li>Used to serve ads. Google may personalize ads based on your browsing behavior.</li>
+			<li>Read more: <span><a class="underlined" href="https://policies.google.com/technologies/partner-sites" target="_blank">https://policies.google.com/technologies/partner-sites<span class="underline" style="--widen: 1%; --fix: .6%;"></span></a></span></li>
+			<li>Manage personalised ad settings: <span><a class="underlined" href="https://adssettings.google.com/" target="_blank">https://adssettings.google.com<span class="underline" style="--widen: 1%; --fix: .6%;"></span></a></span></li>
+		</ul>
+
+		<h2 id="7">6. Your Rights</h2>
+		<p>You have the right to:</p>
+		<ul>
+			<li>Access the personal data we hold about you</li>
+			<li>Request correction or deletion of your data</li>
+			<li>Withdraw your consent at any time</li>
+			<li>Lodge a complaint with the Information Commissioner's Office (ICO)</li>
+		</ul>
+		<p>You can contact us using the <span><a class="underlined" href="#10" aria-label="Section 10">information below<span class="underline" style="--widen: 3%; --fix: 1.7%;"></span></a></span> to exercise your rights.</p>
+
+		<h2 id="8">7. Data Retention</h2>
+		<p>
+			We retain analytics and advertising data for a limited time, as defined by Google (up to 26 months).<br>
+			Consent records (e.g. cookie preferences) are stored for up to 1 year.
+		</p>
+
+		<h2 id="9">8. International Data Transfers</h2>
+		<p>
+			Data collected via Google services may be processed outside the UK.<br>
+			These transfers are subject to appropriate safeguards provided by Google.
+		</p>
+
+		<h2 id="10">9. QTrack Analytics</h2>
+		<p>
+			In addition to Google Analytics, we use a lightweight, privacy-friendly tracking system made by us called "QTrack" to monitor basic visit statistics.<br>
+			This is mainly used for the live visit counters seen throughout the site.
+		</p>
+
+		<h2>What QTrack collects:</h2>
+		<ul>
+			<li>Visitor IP address (<b>temporarily</b>, for session identification)</li>
+			<li>Timestamp of visit</li>
+			<li>Page Visited</li>
+		</ul>
+
+		<h2>What QTrack does <em>not</em> collect</h2>
+		<ul>
+			<li><b>No</b> cookies or device identifiers</li>
+			<li><b>No</b> personal information</li>
+			<li><b>No</b> cross-site tracking</li>
+		</ul>
+		<p>
+			Please note that your IP address is <b>NOT</b> stored together with the timestamp or page visited.<br>
+			IP addresses are <b>NOT</b> stored long-term, and QTrack does not share data with third parties.<br>
+			QTrack keeps a historical record of the number of visits to each page, each day, which can be viewed <span><a class="underlined" href="https://visits.sqa.my/" target="_blank" aria-label="QTrack Data">here<span class="underline" style="--widen: 3%; --fix: 1.7%;"></span></a></span>.
+		</p>
+
+		<h2 id="11">10. Contact Us</h2>
+		<p>
+			If you have any questions or concerns about this policy, or in general, please contact us at:<br>
+			<span><a class="underlined" href="mailto:contact@sqa.my" target="_blank" aria-label="Contact Email">contact@sqa.my<span class="underline" style="--widen: 3%; --fix: 1.7%;"></span></a></span>
+		</p>
+
+		<h2 id="12">11. Changes to This Policy</h2>
+		<p>
+			We may update this policy from time to time. Please review it regularly for changes.<br>
+			The <span><a class="underlined" href="#start" aria-label="Section 0">"Last Updated"<span class="underline" style="--widen: 3%; --fix: 1.7%;"></span></a></span> date at the top will always reflect the latest version.
 		</p>
 	</main>
-	
+
 	<footer id="footer">
 		<a id="contact" aria-label="Contact Form" href="https://qwk.pythonanywhere.com/contact?ref=SQA" target="_blank">Contact</a>
 		<div><h2>{{ upper }} is not affiliated with, endorsed by, or associated with the Scottish Qualifications Authority</h2></div>
@@ -549,16 +682,6 @@
 			qChatEmbed.contentWindow.postMessage({ type: 'control-sync', sync: show ? true : false }, 'https://chat.qwk.zone');
 		}
 		qChatEmbed.addEventListener('load', e => qChat(false));
-
-		fetch('https://qwk.pythonanywhere.com/l/sqa-404?count=false', { method: 'GET' })
-			.then(response => response.json())
-			.then(data => {
-				document.getElementById('visits').innerText = `This page has been visited ${data['visits']} times`;
-			})
-			.catch(error => {
-				document.getElementById('visits').innerText = `Couldn't load visits`;
-				console.error('Error fetching visits:', error)
-			});
 	</script>
 	<script src="https://cdn.jsdelivr.net/gh/qwkdev/sqa/fuse.js"></script>
 	<script>

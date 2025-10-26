@@ -1,18 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<link rel="icon" href="https://raw.githubusercontent.com/qwkdev/sqa/refs/heads/main/icon.ico" type="image/x-icon">
-	<link rel="icon" href="https://raw.githubusercontent.com/qwkdev/sqa/refs/heads/main/icon.png" type="image/png" sizes="32x32">
-	<link rel="icon" href="https://raw.githubusercontent.com/qwkdev/sqa/refs/heads/main/icon.svg" type="image/svg+xml">
-
+	<link rel="icon" href="https://raw.githubusercontent.com/qwkdev/sqa/refs/heads/main/icon/{{ subid }}.ico" type="image/x-icon">
+	<link rel="icon" href="https://raw.githubusercontent.com/qwkdev/sqa/refs/heads/main/icon/{{ subid }}.png" type="image/png" sizes="32x32">
+	<link rel="icon" href="https://raw.githubusercontent.com/qwkdev/sqa/refs/heads/main/icon/{{ subid }}.svg" type="image/svg+xml">
+	
 	<meta charset="UTF-8">
-	<meta name="description" content="Archive of SQA past papers, marking schemes and resources.">
+	<meta name="description" content="Archive of the {{ name }}, marking schemes and resources.">
+	<meta name="keywords" content="SQA, past papers, marking schemes, exams, {{ keywords }}, resources, education, past papers archive">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="theme-color" content="#141415">
 	<meta name="color-scheme" content="dark light">
 	<meta name="author" content="qwk">
+	<meta property="og:title" content="{{ title }}">
+	<meta property="og:description" content="Archive of the {{ name }}. Click here for access, completely and always free">
+	<meta property="og:type" content="website">
+	<meta property="og:site_name" content="{{ upper }}">
+	<meta property="og:locale" content="en_GB">
 
-	<title>404 | {{ upper }}</title>
+	<meta property="og:image" content="https://og.tailgraph.com/og?fontFamily=Montserrat&title={{ name }}&titleTailwind=font-bold%20text-6xl%20text-white&text=Past%20papers%20from%20the%20largest%20archive%20of%20SQA%20past%20papers&textTailwind=text-2xl%20mt-4%20bg-blueGray-300%20text-gray-300&logoUrl=&logoTailwind=h-8&bgTailwind=bg-black&footer={{ lower }}&footerTailwind=text-blue-400%20text-3xl&t=1744575448853&refresh=1">
+	<meta property="og:image:alt" content="{{ name }}">
+	<meta property="og:image:width" content="1200">
+	<meta property="og:image:height" content="630">
+	
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:title" content="{{ upper }}">
+	<meta name="twitter:site" content="@qwkdev">
+	<meta name="twitter:description" content="Archive of the {{ name }}. Click here for access, completely and always free">
+	<meta property="og:image" content="https://og.tailgraph.com/og?fontFamily=Montserrat&title={{ name }}&titleTailwind=font-bold%20text-6xl%20text-white&text=Past%20papers%20from%20the%20largest%20archive%20of%20SQA%20past%20papers&textTailwind=text-2xl%20mt-4%20bg-blueGray-300%20text-gray-300&logoUrl=&logoTailwind=h-8&bgTailwind=bg-black&footer={{ lower }}&footerTailwind=text-blue-400%20text-3xl&t=1744575448853&refresh=1">
+	<meta name="twitter:image:alt" content="{{ name }}">
+
+	<title>{{ title }}</title>
 	<style>
 		:root {
 			--bg: #141415;
@@ -42,14 +60,14 @@
 			display: none;
 		}
 
-
+		
 		#main {
 			width: 100vw;
 			overflow-x: hidden;
 			margin-top: calc(var(--top-height) + var(--top-padding));
 			min-height: calc(100vh - (var(--top-height) + var(--top-padding)) - (var(--qc-size) + (var(--qc-margin) * 2)));
 
-			padding: calc(3 * var(--u));
+			padding: calc(3 * var(--u)) 0;
 			box-sizing: border-box;
 		}
 		#main h1 {
@@ -60,6 +78,7 @@
 			color: #fff;
 			margin: 0;
 			margin-bottom: calc(2.7 * var(--u));
+			margin-left: calc(3 * var(--u));
 		}
 		#main h1::selection {
 			background: #ffffff55;
@@ -71,11 +90,202 @@
 			line-height: calc(2 * var(--u));
 			color: #777;
 			margin: 0;
+			margin-left: calc(3 * var(--u));
 		}
 		#main p::selection, #main p span::selection {
 			background: #77777755;
 		}
 
+		#audio-wrapper {
+			--width: calc(85 * var(--u));
+			height: calc(.6 * var(--width));
+
+			width: 100vw;
+			margin: calc(3 * var(--u)) 0;
+			position: relative;
+		}
+		#audio-player {
+			width: var(--width);
+
+			position: absolute;
+			top: 0;
+			left: 50%;
+			transform: translateX(-50%);
+			
+			display: grid;
+			grid-template-columns: calc(.3 * var(--width)) calc(.4 * var(--width)) calc(.3 * var(--width));
+			grid-template-rows: calc(.1 * var(--width)) calc(.4 * var(--width)) calc(.1 * var(--width));
+		}
+		#audio-player #audio {
+			display: none !important;
+		}
+		#audio-player #play {
+			grid-area: 2 / 2 / 3 / 3;
+			width: 100%;
+			height: 100%;
+			background: var(--glass-bg);
+			border: calc(.3 * var(--u)) solid var(--glass-border);
+			border-radius: 50%;
+			transition: .2s;
+			position: relative;
+		}
+		#audio-player #play #play-svg {
+			left: 54%;
+		}
+		#audio-player #play #pause-svg {
+			left: 51%;
+		}
+		#audio-player #play svg {
+			position: absolute;
+			top: 50%;
+			transform: translate(-50%, -50%);
+			width: 50%;
+			height: 50%;
+			stroke: #ccc;
+			fill: #ccc;
+		}
+		#audio-player #play:hover {
+			background: var(--glass-bg-hover);
+			transform: scale(1.02);
+		}
+		#audio-player #backwards, #audio-player #forwards {
+			background: transparent;
+			border: none;
+			position: relative;
+			width: 100%;
+			height: 100%;
+			transition: .2s;
+		}
+		#audio-player #backwards svg, #audio-player #forwards svg {
+			position: absolute;
+			top: 50%;
+			transform: translate(-50%, -50%);
+			width: 50%;
+			height: 50%;
+			stroke: rgba(245, 245, 255, 0.25);
+			fill: rgba(245, 245, 255, 0.25);
+			transition: .2s;
+		}
+		#audio-player #backwards p, #audio-player #forwards p {
+			margin: 0;
+			color: #fff;
+			font-family: Arial;
+			font-weight: 500;
+			font-size: calc(5 * var(--u));
+			line-height: calc(5 * var(--u));
+			width: 100%;
+			text-align: center;
+			position: absolute;
+			bottom: calc(1.6 * var(--u));
+			left: 0;
+		}
+		#audio-player #backwards:hover svg, #audio-player #forwards:hover svg {
+			stroke: rgba(245, 245, 255, 0.4);
+			fill: rgba(245, 245, 255, 0.4);
+		}
+		#audio-player #backwards {
+			grid-area: 2 / 1 / 3 / 2;
+		}
+		#audio-player #backwards svg {
+			left: 48%;
+		}
+		#audio-player #forwards {
+			grid-area: 2 / 3 / 3 / 4;
+		}
+		#audio-player #forwards svg {
+			left: 52%;
+		}
+		#audio-player #minusten, #audio-player #addten {
+			width: 80%;
+			height: 100%;
+			background: var(--glass-bg);
+			border: calc(.3 * var(--u)) solid var(--glass-border);
+			border-radius: calc(1.5 * var(--u));
+			position: relative;
+			transition: .2s;
+			left: 50%;
+			top: 50%;
+			transform: translate(-50%, -50%);
+			font-size: calc(2.5 * var(--u));
+		}
+		#audio-player #minusten:hover, #audio-player #addten:hover {
+			background: var(--glass-bg-hover);
+			transform: translate(-50%, -50%) scale(1.02);
+		}
+		#audio-player #minusten {
+			grid-area: 1 / 1 / 2 / 2;
+		}
+		#audio-player #addten {
+			grid-area: 1 / 3 / 2 / 4;
+		}
+		#audio-player #timestamp {
+			grid-area: 1 / 2 / 2 / 3;
+			color: #fff;
+			font-family: Arial;
+			font-weight: 500;
+			font-size: calc(2.6 * var(--u));
+			line-height: calc(3.7 * var(--u));
+			text-align: center;
+		}
+		#audio-player #timestamp::selection {
+			background: #ffffff55;
+		}
+		#audio-player #curq {
+			grid-area: 3 / 1 / 4 / 4;
+			color: #777;
+			margin: 0;
+			font-family: Arial;
+			font-weight: 500;
+			font-size: calc(1.8 * var(--u));
+			line-height: calc(1.8 * var(--u));
+			text-align: center;
+			position: relative;
+			top: calc(1 * var(--u));
+			width: 100%;
+		}
+		#audio-player #curq::selection {
+			background: #77777755;
+		}
+		#slider {
+			grid-area: 3 / 1 / 4 / 4;
+			appearance: none;
+			-webkit-appearance: none;
+			background: transparent;
+			cursor: pointer;
+			width: 90%;
+			position: relative;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			--fill: 0%;
+		}
+		#slider::-webkit-slider-runnable-track {
+			background: linear-gradient(to right, #777 var(--fill), var(--glass-bg) var(--fill)) !important;
+			border-radius: calc(1 * var(--u));
+			height: calc(1 * var(--u));
+		}
+		#slider::-moz-range-track {
+			background: linear-gradient(to right, #777 var(--fill), var(--glass-bg) var(--fill)) !important;
+			border-radius: calc(1 * var(--u));
+			height: calc(1 * var(--u));
+		}
+		#slider::-webkit-slider-thumb {
+			-webkit-appearance: none;
+			appearance: none;
+			background-color: #ccc;
+			border: none;
+			border-radius: 50%;
+			width: calc(2 * var(--u));
+			height: calc(2 * var(--u));
+			margin-top: calc(-.5 * var(--u));
+		}
+		#slider::-moz-range-thumb {
+			border: none;
+			border-radius: 50%;
+			background-color: #ccc;
+			width: calc(2 * var(--u));
+			height: calc(2 * var(--u));
+		}
 
 		.underlined {
 			color: #fff;
@@ -493,20 +703,42 @@
 		</div>
 		<div id="top-results" hidden></div>
 	</header>
-	
-	<main id="main" role="main" aria-label="Main Content">
-		<h1 id="name">Error 404</h1>
-		<p id="description">
-			We couldn't find the page you were looking for.<br>
-			Please check the URL and try again,<br>
-			or search for it using the search bar above.<br>
-			<br>
-			If you came accross this page normally, please let us know using the "Contact" button below.<br>
-			<br>
-			<span id="visits">Loading visits...</span>
-		</p>
-	</main>
-	
+
+	<section id="main" aria-label="Page Content">
+		<h1 id="name" aria-label="Subject Name">{{ name }}</h1>
+		<p>{{ notes }}</p>
+		<p id="visits">Loading visits...</p>
+
+		<div id="audio-wrapper">
+			<main id="audio-player">
+				<audio controls id="audio" src="{{ audio }}" aria-label="Audio"></audio>
+				
+				<button id="minusten" onclick="skip(-10)">
+					-10s
+				</button>
+				<h2 id="timestamp">Loading...</h2>
+				<button id="addten" onclick="skip(10)">
+					+10s
+				</button>
+
+				<button id="backwards" onclick="gotoq(-1)">
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M459.5 440.6c9.5 7.9 22.8 9.7 34.1 4.4s18.4-16.6 18.4-29l0-320c0-12.4-7.2-23.7-18.4-29s-24.5-3.6-34.1 4.4L288 214.3l0 41.7 0 41.7L459.5 440.6zM256 352l0-96 0-128 0-32c0-12.4-7.2-23.7-18.4-29s-24.5-3.6-34.1 4.4l-192 160C4.2 237.5 0 246.5 0 256s4.2 18.5 11.5 24.6l192 160c9.5 7.9 22.8 9.7 34.1 4.4s18.4-16.6 18.4-29l0-64z"/></svg>
+					<p id="prevq"></p>
+				</button>
+				<button id="play" onclick="playpause()">
+					<svg id="play-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80L0 432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg>
+					<svg id="pause-svg" style="display: none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M48 64C21.5 64 0 85.5 0 112L0 400c0 26.5 21.5 48 48 48l32 0c26.5 0 48-21.5 48-48l0-288c0-26.5-21.5-48-48-48L48 64zm192 0c-26.5 0-48 21.5-48 48l0 288c0 26.5 21.5 48 48 48l32 0c26.5 0 48-21.5 48-48l0-288c0-26.5-21.5-48-48-48l-32 0z"/></svg>
+				</button>
+				<button id="forwards" onclick="gotoq(1)">
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M52.5 440.6c-9.5 7.9-22.8 9.7-34.1 4.4S0 428.4 0 416L0 96C0 83.6 7.2 72.3 18.4 67s24.5-3.6 34.1 4.4L224 214.3l0 41.7 0 41.7L52.5 440.6zM256 352l0-96 0-128 0-32c0-12.4 7.2-23.7 18.4-29s24.5-3.6 34.1 4.4l192 160c7.3 6.1 11.5 15.1 11.5 24.6s-4.2 18.5-11.5 24.6l-192 160c-9.5 7.9-22.8 9.7-34.1 4.4s-18.4-16.6-18.4-29l0-64z"/></svg>
+					<p id="nextq"></p>
+				</button>
+				<p id="curq"></p>
+				<input type="range" id="slider" min="0" max="100" value="0" aria-label="Audio Progress Slider" onchange="seek(this.value)">
+			</main>
+		</div>
+	</section>
+
 	<footer id="footer">
 		<a id="contact" aria-label="Contact Form" href="https://qwk.pythonanywhere.com/contact?ref=SQA" target="_blank">Contact</a>
 		<div><h2>{{ upper }} is not affiliated with, endorsed by, or associated with the Scottish Qualifications Authority</h2></div>
@@ -528,6 +760,101 @@
 	</div>
 
 	<script>
+		const audio = document.getElementById('audio');
+		const slider = document.getElementById('slider');
+
+		const bookmarks = [ {{ bookmarks }} ];
+
+		function getquestion() {
+			let closest = 0;
+			for (let i = 1; i < bookmarks.length; i++) {
+				if (audio.currentTime >= bookmarks[i].time) {
+					closest = i;
+				} else {
+					return closest;
+				}
+			}
+			return closest;
+		}
+
+		function fixquestion() {
+			let question = getquestion();
+			document.getElementById('curq').innerText = `Current Question: ${bookmarks[question].name}`;
+			document.getElementById('prevq').innerText = question == 0 ? '' : `${bookmarks[question - 1].name}`;
+			document.getElementById('nextq').innerText = `${bookmarks[question + 1].name}`;
+		}
+
+		function gotoq(step) {
+			let question = getquestion() + step;
+			audio.currentTime = bookmarks[question].time;
+			seek((audio.currentTime / audio.duration) * 100, true);
+			fixTimestamp();
+			fixquestion();
+		}
+
+		function round(num, places) {
+			const factor = Math.pow(10, places);
+			return Math.round(num * factor) / factor;
+		}
+
+		function playpause() {
+			if (audio.paused) {
+				audio.play();
+				document.getElementById('play-svg').style.display = 'none';
+				document.getElementById('pause-svg').style.display = 'block';
+			} else {
+				audio.pause();
+				document.getElementById('play-svg').style.display = 'block';
+				document.getElementById('pause-svg').style.display = 'none';
+			}
+		}
+
+		function fixTimestamp() {
+			let curm = Math.floor(audio.currentTime / 60);
+			let curs = Math.floor(audio.currentTime - (curm * 60));
+			let totm = Math.floor(audio.duration / 60);
+			let tots = Math.floor(audio.duration - (totm * 60));
+			document.getElementById('timestamp').innerText = `${curm < 10 ? '0' : ''}${curm}:${curs < 10 ? '0' : ''}${curs}/${totm < 10 ? '0' : ''}${totm}:${tots < 10 ? '0' : ''}${tots}`;
+		}
+
+		function seek(value, noAudio=false) {
+			slider.style.setProperty('--fill', `${value}%`);
+			slider.value = value;
+
+			if (!noAudio && audio) {
+				console.log(slider.value, audio.duration, audio.currentTime);
+				audio.currentTime = (slider.value / 100) * audio.duration;
+				fixTimestamp();
+				fixquestion();
+			}
+		}
+
+		function skip(value) {
+			if (audio) {
+				audio.currentTime += value;
+				seek((audio.currentTime / audio.duration) * 100, true);
+				fixTimestamp();
+				fixquestion();
+			}
+		}
+
+		setTimeout(() => seek(0), 500);
+		audio.addEventListener('loadedmetadata', () => seek(0));
+
+		audio.addEventListener('timeupdate', () => {
+			seek((audio.currentTime / audio.duration) * 100, true);
+			fixTimestamp();
+			fixquestion();
+
+			if (audio.paused) {
+				document.getElementById('play-svg').style.display = 'block';
+				document.getElementById('pause-svg').style.display = 'none';
+			} else {
+				document.getElementById('play-svg').style.display = 'none';
+				document.getElementById('pause-svg').style.display = 'block';
+			}
+		});
+
 		const topNav = document.getElementById('top');
 		const topQuery = document.getElementById('top-query');
 		const topResults = document.getElementById('top-results');
@@ -550,7 +877,7 @@
 		}
 		qChatEmbed.addEventListener('load', e => qChat(false));
 
-		fetch('https://qwk.pythonanywhere.com/l/sqa-404?count=false', { method: 'GET' })
+		fetch('https://qwk.pythonanywhere.com/l/{{ visitid }}', { method: 'GET' })
 			.then(response => response.json())
 			.then(data => {
 				document.getElementById('visits').innerText = `This page has been visited ${data['visits']} times`;

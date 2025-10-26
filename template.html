@@ -1,18 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<link rel="icon" href="https://raw.githubusercontent.com/qwkdev/sqa/refs/heads/main/icon.ico" type="image/x-icon">
-	<link rel="icon" href="https://raw.githubusercontent.com/qwkdev/sqa/refs/heads/main/icon.png" type="image/png" sizes="32x32">
-	<link rel="icon" href="https://raw.githubusercontent.com/qwkdev/sqa/refs/heads/main/icon.svg" type="image/svg+xml">
-
+	<link rel="icon" href="https://raw.githubusercontent.com/qwkdev/sqa/refs/heads/main/icon/{{ subid }}.ico" type="image/x-icon">
+	<link rel="icon" href="https://raw.githubusercontent.com/qwkdev/sqa/refs/heads/main/icon/{{ subid }}.png" type="image/png" sizes="32x32">
+	<link rel="icon" href="https://raw.githubusercontent.com/qwkdev/sqa/refs/heads/main/icon/{{ subid }}.svg" type="image/svg+xml">
+	
 	<meta charset="UTF-8">
-	<meta name="description" content="Archive of SQA past papers, marking schemes and resources.">
+	<meta name="description" content="Archive of {{ name }} past papers, marking schemes and resources.">
+	<meta name="keywords" content="SQA, past papers, marking schemes, exams, {{ keywords }}, resources, education, past papers archive">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="theme-color" content="#141415">
 	<meta name="color-scheme" content="dark light">
 	<meta name="author" content="qwk">
+	<meta property="og:title" content="{{ title }}">
+	<meta property="og:description" content="Archive of {{ name }} past papers, marking schemes and resources. Click here for access, completely and always free">
+	<meta property="og:type" content="website">
+	<meta property="og:site_name" content="{{ upper }}">
+	<meta property="og:locale" content="en_GB">
 
-	<title>404 | {{ upper }}</title>
+	<meta property="og:image" content="https://og.tailgraph.com/og?fontFamily=Montserrat&title={{ name }} Past Papers&titleTailwind=font-bold%20text-6xl%20text-white&text=Past%20papers%20from%20the%20largest%20archive%20of%20SQA%20past%20papers&textTailwind=text-2xl%20mt-4%20bg-blueGray-300%20text-gray-300&logoUrl=&logoTailwind=h-8&bgTailwind=bg-black&footer={{ lower }}&footerTailwind=text-blue-400%20text-3xl&t=1744575448853&refresh=1">
+	<meta property="og:image:alt" content="{{ name }} Past Papers">
+	<meta property="og:image:width" content="1200">
+	<meta property="og:image:height" content="630">
+	
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:title" content="{{ upper }}">
+	<meta name="twitter:site" content="@qwkdev">
+	<meta name="twitter:description" content="Archive of {{ name }} past papers, marking schemes and resources. Click here for access, completely and always free">
+	<meta property="og:image" content="https://og.tailgraph.com/og?fontFamily=Montserrat&title={{ name }} Past Papers&titleTailwind=font-bold%20text-6xl%20text-white&text=Past%20papers%20from%20the%20largest%20archive%20of%20SQA%20past%20papers&textTailwind=text-2xl%20mt-4%20bg-blueGray-300%20text-gray-300&logoUrl=&logoTailwind=h-8&bgTailwind=bg-black&footer={{ lower }}&footerTailwind=text-blue-400%20text-3xl&t=1744575448853&refresh=1">
+	<meta name="twitter:image:alt" content="{{ name }} Past Papers">
+
+	<title>{{ title }}</title>
 	<style>
 		:root {
 			--bg: #141415;
@@ -49,7 +67,7 @@
 			margin-top: calc(var(--top-height) + var(--top-padding));
 			min-height: calc(100vh - (var(--top-height) + var(--top-padding)) - (var(--qc-size) + (var(--qc-margin) * 2)));
 
-			padding: calc(3 * var(--u));
+			padding: calc(3 * var(--u)) 0;
 			box-sizing: border-box;
 		}
 		#main h1 {
@@ -60,6 +78,7 @@
 			color: #fff;
 			margin: 0;
 			margin-bottom: calc(2.7 * var(--u));
+			margin-left: calc(3 * var(--u));
 		}
 		#main h1::selection {
 			background: #ffffff55;
@@ -71,12 +90,107 @@
 			line-height: calc(2 * var(--u));
 			color: #777;
 			margin: 0;
+			margin-left: calc(3 * var(--u));
 		}
-		#main p::selection, #main p span::selection {
+		#main p::selection, #main span::selection {
 			background: #77777755;
 		}
-
-
+		#main h2 {
+			font-family: Arial;
+			font-weight: 500;
+			font-size: calc(4.2 * var(--u));
+			color: #fff;
+			margin: 0;
+			margin-left: calc(3 * var(--u));
+			margin-top: calc(2.7 * var(--u));
+		}
+		#main h2 a {
+			white-space: nowrap;
+		}
+		#fade-wrap {
+			margin-top: calc(2.7 * var(--u));
+			position: relative;
+			width: 100vw;
+		}
+		#fade-wrap::before, #fade-wrap::after {
+			content: '';
+			position: absolute;
+			top: 0;
+			width: calc(3 * var(--u));
+			height: 100%;
+			z-index: 10;
+		}
+		#fade-wrap::before {
+			left: 0;
+			background: linear-gradient(to right, #141415ff, #14141500);
+		}
+		#fade-wrap::after {
+			right: 0;
+			background: linear-gradient(to left, #141415ff, #14141500);
+		}
+		#table-wrap {
+			width: 100vw;
+			margin: 0;
+			padding-bottom: calc(2 * var(--u));
+			position: relative;
+			height: min-content;
+			overflow-x: scroll;
+		}
+		#table-wrap::-webkit-scrollbar {
+			display: none;
+		}
+		#main table {
+			--corner: calc(2 * var(--u));
+			margin: 0 calc(3 * var(--u));
+			width: max-content;
+			border-spacing: 0;
+			color: #fff;
+		}
+		#main table td::selection, #main table th::selection, #main h2::selection {
+			background: #ffffff55;
+		}
+		#main table a::selection, #main h2 a::selection {
+			background: #0088ff55;
+		}
+		#main table a, #main h2 a {
+			color: #0088ff;
+			transition: .1s;
+		}
+		#main table a:hover, #main h2 a:hover {
+			color: #00aaff;
+		}
+		#main table th {
+			border: calc(.2 * var(--u)) solid #5a5a5b;
+			font-weight: 700;
+		}
+		#main table td {
+			border: calc(.2 * var(--u)) solid #2a2a2b;
+			font-weight: 500;
+			border-top: none;
+		}
+		#main table tr:first-child th:first-child {
+			border-top-left-radius: var(--corner);
+		}
+		#main table tr:first-child th:last-child {
+			border-top-right-radius: var(--corner);
+		}
+		#main table tr:last-child td:first-child {
+			border-bottom-left-radius: var(--corner);
+		}
+		#main table tr:last-child td:last-child {
+			border-bottom-right-radius: var(--corner);
+		}
+		#main table tr {
+			font-family: Arial;
+			font-size: calc(4.2 * var(--u));
+		}
+		#main table tr th, #main table tr td {
+			padding: calc(.8 * var(--u)) calc(1.8 * var(--u));
+		}
+		#main table tr th:not(:last-child), #main table tr td:not(:last-child) {
+			border-right: none;
+		}
+		
 		.underlined {
 			color: #fff;
 			font-family: Arial;
@@ -493,19 +607,27 @@
 		</div>
 		<div id="top-results" hidden></div>
 	</header>
-	
-	<main id="main" role="main" aria-label="Main Content">
-		<h1 id="name">Error 404</h1>
-		<p id="description">
-			We couldn't find the page you were looking for.<br>
-			Please check the URL and try again,<br>
-			or search for it using the search bar above.<br>
-			<br>
-			If you came accross this page normally, please let us know using the "Contact" button below.<br>
-			<br>
+
+	<section id="main" aria-label="Page Content">
+		<h1 id="name" aria-label="Subject Name">{{ name }}</h1>
+		<p>
+			Archive of SQA past papers and resources<br>
+			The provided files are exclusively for supporting the studies of SQA qualifications.<br>
+			Other uses require explicit permission from the SQA.<br>
+			{{ upper }} provides these files for educational use only, and not for commercial gain.<br>
+			Nor does claim ownership or copyright of said files.<br>
+			All rights go to their respective owners.<br><br>
 			<span id="visits">Loading visits...</span>
 		</p>
-	</main>
+
+		<h2{{ extratag }}>{{ extra }}</h2>
+
+		<div id="fade-wrap"><main id="table-wrap" aria-label="Past Paper Section">
+			<table aria-label="Past Papers">
+{{ table }}
+			</table>
+		</main></div>
+	</section>
 	
 	<footer id="footer">
 		<a id="contact" aria-label="Contact Form" href="https://qwk.pythonanywhere.com/contact?ref=SQA" target="_blank">Contact</a>
@@ -528,6 +650,20 @@
 	</div>
 
 	<script>
+		if ('{{ exam }}') {
+			var time = new Date("{{ exam }} 00:00:00").getTime() - new Date().getTime();
+			var days = Math.ceil(time / (1000 * 60 * 60 * 24));
+			if (time >= 0) {
+				if (days == 1) {
+					document.getElementById("name").innerHTML = `{{ name }} - ${days} day`;
+				} else {
+					document.getElementById("name").innerHTML = `{{ name }} - ${days} days`;
+				}
+			} else if (days == 0) {
+				document.getElementById("name").innerHTML = `{{ name }} - Today`;
+			}
+		}
+
 		const topNav = document.getElementById('top');
 		const topQuery = document.getElementById('top-query');
 		const topResults = document.getElementById('top-results');
@@ -550,7 +686,7 @@
 		}
 		qChatEmbed.addEventListener('load', e => qChat(false));
 
-		fetch('https://qwk.pythonanywhere.com/l/sqa-404?count=false', { method: 'GET' })
+		fetch('https://qwk.pythonanywhere.com/l/{{ visitid }}', { method: 'GET' })
 			.then(response => response.json())
 			.then(data => {
 				document.getElementById('visits').innerText = `This page has been visited ${data['visits']} times`;
